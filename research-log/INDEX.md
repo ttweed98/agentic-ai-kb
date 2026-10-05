@@ -123,3 +123,13 @@ refused — tested 2026-09-29). So:
 **Knowledge updated**
 - `knowledge/q1-where-control-lives.md` — appended: Rego as a fifth policy language; position 3
   made concrete; **alteration named as a third outcome the table does not cover.**
+
+---
+
+## ★ READ FIRST — `START-HERE.md`
+
+`START-HERE.md` is the **state** file: what is active, what is decided, what is waiting, and
+the order of the steps. This INDEX routes by *topic*; START-HERE routes by *what to do next*.
+Paste START-HERE at the top of a new chat, then pull files from here.
+
+Updated 2026-10-05.
