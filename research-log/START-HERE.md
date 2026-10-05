@@ -305,3 +305,7 @@ Notes that travel with the table:
   channel, Q3. Check the platform before buying anywhere.
 - Soares, *Skills for AI Agents* — saved, planned for early 2027.
 - Stratis, *AI Agents with MCP* — see workstream 1; placement open.
+
+### Update 2026-10-05 (later)
+- **Reading position:** on `docs/2026-07-28/learn/server-concepts`, following along with each page.
+- **Alake harness courses (both):** saved, to be watched **after MCPA**. Not attended live.
