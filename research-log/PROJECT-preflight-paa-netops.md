@@ -254,105 +254,158 @@ Order matters: 1 and 2 build standing so 3 lands with people who already believe
 
 ## ★ RESEARCH UPDATE — 2026-10-05
 
-Everything above is the **2026-09-26 original, restored verbatim.** This section is appended,
-not merged. Where the two disagree, the original states the design intent and this states the
-current state of the world.
+Everything above is the original design of 2026-09-26, restored verbatim. This section records
+what changed underneath it. **Nothing above has been edited** — where the two disagree, this
+section wins on facts and the original wins on intent.
 
-### §6.1 — DECIDED
+⚠ **A reconstruction of this file was committed on 2026-10-05 and was wrong in one material
+way: it gave M1's RFC set as OAuth 2.1 + PKCE + RFC 8693 token exchange.** That is not this
+design. The correct set is §0 above — RFC 9728, RFC 8414, RFC 9207, Client ID Metadata
+Documents (replacing RFC 7591 DCR), RFC 8707. The reconstruction has been replaced by this file.
 
-**M0 runs after the MCPA reading is complete.** The reading is the priority; M0 does not start
-beside it. His words: *"After I complete the reading for the exam. I need to put this as
-priority."* The original's own read ("it fits beside MCPA") is overruled.
+### M5 got cheaper — Batfish ships its own MCP server
 
-⇒ The ordered path from here: **MCPA reading → M0 → M1 → M2 → M3 → M4 → M5.** `START-HERE.md`
-carries this for a new session.
+`pip install 'pybatfish[mcp]'` → `batfish-mcp`. 36 tools at v2026.08.27, more since (PR #995,
+merged 2026-09-29, added `generate_dataplane`, `get_lpm_routes`, `get_edges`). `run_traceroute`
+gained `trace_format: text | structured | summary` — **structured JSON traces, no regex
+parsing.** Batfish is AWS-managed and active; the maintenance question in
+`sources/batfish-as-policy-predicate.md` is closed.
 
-Remaining §6 calls stay open: §6.2 is M1 in, §6.3 repo name, §6.4 E2 arms, §6.5 Cedar vs
-asserts.
+⇒ **M5 consumes a tool rather than building one.** The differentiator is unchanged — the
+predicate still needs a network model and still cannot be copied by a security vendor — but
+the work is integration, not construction. Release notes warn tool names may still change.
 
-### What changed under the design
+### E1 sharpens rather than dies
 
-**§1 Batfish — it already ships what M5 was going to build.**
-`pip install 'pybatfish[mcp]'` → `batfish-mcp`, a **first-party beta MCP server**, 36+ tools,
-Apache-2.0, AWS-managed. `run_traceroute` takes `trace_format: text | structured | summary`, so
-hop extraction needs no regex. ⚠ *"Tool names and parameters may still change."* M5 becomes
-integration, not construction — and `pybatfish/mcp/server.py` is a working reference
-implementation of a network-domain MCP server worth reading on its own. ⚠ Breaking in
-v2026.08.27: **JDK 21 minimum**; `Next_Hop_IP` / `Next_Hop_Interface` removed from route queries.
+`dogwood-local-engine` **1.0.0 shipped 2026-09-29** — redb-backed durable log, periodic
+snapshots, fsync before verdict, and *"a lock that admits one submission at a time"* to
+linearize concurrent events. AWS's launch post works the aggregate-limit-under-concurrency
+scenario directly and names the fix: **count request events including in-flight ones, not
+response events.**
 
-**§1 Netpicker — the rule corpus is open, the runner is not.**
-`netpicker/pytests-for-networking` is a public repo: `CIS/`, `CVEasy_examples/`, `tests/`. The
-assert bodies are plain Python. ⚠ But the `@low`/`@medium`/`@high` decorators and the injected
-`configuration` / `commands` / `device` fixtures are **product-supplied globals** — there is no
-documented way to run a rule outside the platform, and compliance validation is capped at 10
-devices below **$7,500/yr**. ⇒ **a free rule library, not a free runner.** This is **BC2**, the
-strongest build candidate here.
+The original thesis — *"Dogwood documents this; nobody has measured it on a fabric"* — still
+holds. What changed is that there is now a claimed fix to test against. **E1 becomes two
+sharper questions:**
 
-**§1 SuzieQ — promote "not adopted" to decided-no.** 0.24.0 was 2025-05-09; 17 months stale, 114
-open issues. Its `assert` is a fixed built-in on four tables and **is not user-definable.** Close
-the thread.
+- **E1a** — does the Local Engine's linearization claim hold under fan-out? AWS asserts it;
+  nobody has tested it independently.
+- **E1b** — does request-vs-response event counting actually fix it? Two arms, one variable.
+  ★ The stronger experiment, and the one post 3 should carry.
 
-**§2 M1 — the reference implementation is already on disk.**
-`ktbyers/netmiko_mcp` at `~/projects/KBYERS_Netmiko_MCP/netmiko_mcp` imports
-`from mcp.server import MCPServer` ⇒ SDK v2 ⇒ **it tracks the 2026-07-28 revision the exam
-tests.** The only MCP codebase he owns that does.
+⚠ **Framing discipline in §5 applies with more force, not less.** AWS now documents both the
+hole and the fix. The citable framing is *"measuring a documented limitation, and a documented
+fix, in a domain its authors did not test."*
 
-**§2 M2 — the test rig is already on disk.** Soares module 04
-`tests/test_pre_tool_hook.py` — same artifact name as OAP's `before_tool_call`.
+**Prior art in the wild:** `yunaremaia/agent-guard` issue #136 (2026-09-21, closed, labelled a
+security vulnerability) — non-atomic read-modify-write in `Guard.check()` lets concurrent
+threads lose increments and bypass `max_tool_calls`. See
+`sources/agent-guard-race-condition.md`. This is the failure mode, observed, with a fix.
 
-**§2 M2 — four of the five properties already exist in Case 01.** The `audited` context manager
-is auditability; the allowlist gate is determinism and fail-closed. ⚠ Missing: **non-bypassability
-as a stated guarantee.** ESCALATE stays out of scope, as the original says.
+### M4's Cedar arm has a Python path, and Dogwood has a sidecar
 
-**§3 E1 — splits, and gains a claimed fix to test.**
-`dogwood-local-engine` **1.0.0 shipped 2026-09-29** (Apache-2.0, Rust, redb-backed,
-**fsync-before-verdict**, *"a lock that admits one submission at a time"*). AWS's launch post
-works the aggregate-limit-under-concurrency scenario directly and names a fix: **count request
-events including in-flight ones, not response events.**
+- **Cedar 4.13.0** (2026-09-15). Python via **`cedarpy` 4.12.1** — community (k9securityio),
+  not AWS-supported, but tracks upstream within ~2 months and exposes `is_authorized`,
+  `is_authorized_batch`, **`is_authorized_partial`**, template linking.
+- ★ **`cedar-policy/cedar-for-agents` is official AWS** — generates Cedar schemas **from MCP
+  tool definitions**, so a tool call becomes a typed Cedar request. That is precisely the seam
+  this project sits on, and it is the strongest argument for Cedar over asserts as the primary
+  arm (open decision §6.5).
+- ★ **`dogwood-server`** — sibling crate to the Local Engine, **two Unix sockets** (control
+  plane for policy sets, data plane for history and decision events). AWS's blog does not
+  mention it; the repo README does. ⇒ a Python sidecar client is roughly 150 lines after one
+  read of the Rust. ⚠ Wire format undocumented, and the crate is labelled a *demo*.
+- ⚠ **Do not use `dogwood-py`** (0.0.11.dev33) — it binds the *reference interpreter*, the one
+  AWS says is not for production.
 
-The original thesis is untouched — the original already says Dogwood *documents* the gap and
-*"Nobody has measured it on a fabric."* E1 was never about discovering it. It now sharpens:
+★ **B3 — add Rego/OPA as a fourth E2 arm.** It sits between code and data differently from
+Cedar and is the most widely deployed of the policy languages. ⚠ But note the limit: **OPA
+decides, it never reserves.** No atomicity primitive, so any aggregate limit over OPA is
+read-only against state something else must update.
 
-- **E1a** — does the Local Engine's linearization claim hold under fabric fan-out?
-- **E1b** — does request-vs-response counting actually fix it?
+### M4's Netpicker arm — the corpus is open, the runner is not
 
-⚠ The engine **issues verdicts; it does not enforce them**, and **its own log is pruned** after
-snapshotting. ⇒ `preflight`'s signed record cannot be the engine's log. ⚠ Do **not** use
-`dogwood-py` — unofficial, and it binds the reference interpreter, not the Local Engine.
-★ **`dogwood-server`** is a sibling crate exposing **two Unix sockets** (control plane for
-policy-set changes, data plane for history and decision events) — AWS's blog never mentions it.
-A Python sidecar client is ~150 lines after one read of the Rust: **BC3**, with the caveat that
-the crate is labelled a demo and the wire format is undocumented.
+⚠ **Correction to `sources/netpicker-rule-syntax.md`:** the rules are not standalone pytest.
+`@low` / `@medium` / `@high` and the injected `configuration` / `commands` / `device` /
+`devices` parameters are Netpicker-supplied globals; there is no documented way to run a rule
+outside the product. Compliance validation is also capped at **10 devices** free, with
+Professional from **$7,500/yr**.
 
-**§3/§6.5 E2 — new evidence for Cedar.**
-`cedar-policy/cedar-for-agents` is **official AWS** and generates Cedar schemas **from MCP tool
-definitions** — a tool call becomes a typed Cedar request. Ships a PyPI schema generator. That
-schema seam is exactly where this project sits, and it is the strongest argument yet for Cedar
-as the primary arm. Cedar is 4.13.0; Python via `cedarpy` (not AWS-supported, tracks upstream
-within ~2 months). ⚠ Formal analysis (`cedar-policy-symcc`, Lean-proved) is **Rust-only** — the
-analyzability argument comes with a tooling caveat. Also: the **Strands Agents SDK ships an
-official Cedar authorization intervention** in Python, fail-closed, prior art worth reading.
+★ **But `netpicker/pytests-for-networking` is public** — CIS benchmarks, CVE examples, the
+assert bodies in plain Python. Strip the decorator, supply the fixtures, and they port in an
+afternoon. **A free rule library, not a free runner.**
 
-**§3 — add Rego/OPA as E2's third arm.** It sits between code and data in a way Cedar does not,
-and it is the most widely deployed of the five policy languages.
+⇒ **BC2 below.** This is the strongest build candidate in the project.
 
-**§3 Record per decision — the field list now has a standard to borrow.**
-OTel GenAI semantic conventions moved to `open-telemetry/semantic-conventions-genai` in v1.42.0
-(2026-06-12) and define `gen_ai.tool.*`, `gen_ai.conversation.id`, and **`mcp.*`**
-(`mcp.method.name`, `mcp.resource.uri`, `mcp.protocol.version`, `mcp.session.id`). ⚠ **Zero
-releases, zero tags, everything marked `Development`.** Borrow the attribute names; pin nothing.
-**Capture this one** — it will move.
+### M5 gains a schema it did not have
 
-### Build candidates where nothing good exists
+The original says "audit stream into Loki, per-agent rates into Prometheus, one Grafana panel"
+without naming a wire format. There is now a standard one — see
+`sources/otel-genai-semconv.md`. Two things that change M5's design:
 
-| | What | Size |
-|---|---|---|
-| **BC1** | open-source Nautobot MCP server | 1–3 days |
-| ★ **BC2** | open compliance-rule runner over the Netpicker corpus | days — **strongest** |
-| **BC3** | Python client for `dogwood-server`'s two sockets | ~150 lines |
+- ★ **Set `gen_ai.conversation.id` to a change or incident number** and an entire agent run is
+  one retrievable trace. Highest-value instrumentation decision in the project.
+- ⚠ **`gen_ai.input.messages` / `output.messages` are Opt-In and must stay off** — device
+  configs in prompts would otherwise land in Tempo.
 
-### Deferred, deliberately
+⚠ **Grafana's own agent product is unusable here.** Agent Observability (GA 2026-07-30) is
+**Grafana Cloud only** — their docs say *"No self-managed release"* — and sends generation data
+to a proprietary endpoint, not OTel. The §1 component `chadell/network-observability-lab`
+stands; the vendor product does not.
 
-Levan's `Agentic-AI-The-Hard-Way` → the Kubernetes block, next year. Reichert's *Agentic AI for
-Platform Engineering* → after the Kubernetes study. agentgateway stays read-only prior art, as
-§1 says.
+### Closed out
+
+- **SuzieQ — decided no**, not "held." 0.24.0 was **2025-05-09**, 17 months stale, 114 open
+  issues, and its `assert` is a fixed built-in on four tables, **not user-definable**. Remove
+  it from consideration rather than leaving it as an open thread.
+- **agentgateway** — the original says "read as prior art, don't run." Unchanged and correct.
+  Its `AgentgatewayModel` object is now documented (`sources/agentgateway-model-object.md`)
+  and raises one genuinely new question: a control plane that *alters* a request is neither
+  ALLOW nor DENY, and the caller cannot detect it. **M2's decision set may need a fourth
+  outcome.**
+
+### ★ Build candidates — gaps with no good open-source answer
+
+Per the standing position that a gap is a candidate, not a blocker.
+
+| # | Thing | Size | Why |
+|---|---|---|---|
+| **BC1** | An open-source Nautobot MCP server | 1–3 days | NTC's official one (v1.1.0, 2026-09-08) is behind private Artifactory and commercial; the only community option is 2★ with an ambiguous licence (PyPI says MIT, repo LICENSE is an unfilled Apache template) |
+| ★ **BC2** | An open compliance-rule runner in Netpicker's shape | days | The corpus is already open. Lands directly on Q5 with a real rule library to test against |
+| **BC3** | A Python client for `dogwood-server` | ~150 lines | Nobody has one; the only Python path today binds the engine AWS says not to run |
+
+### §6 decisions — one answered, four open
+
+All five calls in §6 remain yours and remain unmade. They are the blocker, not the research.
+
+### Versions, 2026-10-05
+
+Nautobot **3.2.6** · Golden Config **3.0.8** · SSoT **4.6.1** · Design Builder **3.1.2** ·
+Containerlab **0.79.0** · Batfish **v2026.08.27** / pybatfish **2026.9.17.3748** ·
+Cedar **4.13.0** · `dogwood-local-engine` **1.0.0** · OPA **1.21.x** · Grafana **13.2.x** ·
+Tempo **2.9+** · Netpicker **2.8**.
+
+⚠ Work Nautobot is **2.3.8 / GC 2.x** — a major behind on both.
+
+---
+
+## ★ §6.1 — DECIDED 2026-10-05
+
+**M0 runs after the MCPA reading is complete.** The reading is the priority; M0 does **not**
+start beside it. His words: *"After I complete the reading for the exam. I need to put this as
+priority."*
+
+⇒ This overrules §6.1's own recommendation above ("it fits beside MCPA") and supersedes any
+line in this file that says all five §6 calls are unmade.
+
+**The ordered path from here:**
+
+```
+MCPA reading  →  M0  →  M1  →  M2  →  M3  →  M4  →  M5
+   (active)      (next)
+```
+
+Still open and still his: **§6.2** is M1 in (if no, park the project) · **§6.3** repo name ·
+**§6.4** E2's arms · **§6.5** Cedar vs asserts.
+
+★ `research-log/START-HERE.md` carries this order for a cold session. Update it when any of the
+four remaining calls is made.
