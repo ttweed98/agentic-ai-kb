@@ -68,3 +68,45 @@ Reading probably gets 80% of the lesson for 5% of the effort. Growth step 3 in
 
 Adjacent: Packet Coders has an intro to Netpicker, so it sits in Sif's orbit.
 
+
+## ★ Update 2026-10-05 — the corpus is open, the runner is not
+
+Netpicker **2.8** (2026-10-05). Two corrections and one unlock.
+
+⚠ **CORRECTION — these are not standalone pytest functions.** The `@low` / `@medium` /
+`@high` decorators and the injected `configuration` / `commands` / `device` / `devices`
+parameters are **Netpicker-supplied globals**. No import lines appear anywhere in their docs or
+examples. There is **no documented way to run a rule outside the product**. Treat the earlier
+framing of these as plain pytest as wrong.
+
+⚠ **CORRECTION — the commercial wall is hard.** Foundation is free for unlimited devices for
+*backup/search/automation*, but **Professional features including compliance validation are
+capped at 10 devices.** Professional starts at **$7,500/yr**, Enterprise at **$33,500/yr**.
+"Running the platform is optional" was right; it is now also effectively impossible.
+
+★★ **THE UNLOCK: `netpicker/pytests-for-networking` is a public repo** — `CIS/`,
+`CVEasy_examples/`, `Integrations/`, `tests/`, `EXAMPLES.md`. The assert bodies are plain
+Python. Strip the decorator, supply the fixtures yourself, and they port in an afternoon.
+
+⇒ **A free rule library, not a free runner.** This is **BC2** in
+`PROJECT-preflight-paa-netops.md` — the strongest build candidate in the project, because the
+corpus already exists and the missing piece is small.
+
+`netpicker/netpicker-cli` is **MIT** and is the sanctioned external entry point
+(`policy test-rule`, `policy execute-rules`, `compliance log`), configured via
+`NETPICKER_BASE_URL` / `NETPICKER_TENANT` / `NETPICKER_TOKEN` — but it is an API client; the
+engine stays proprietary. Its README states it also ships an MCP server.
+
+**On the Nautobot-version gotcha above:** upstream Nautobot is now **3.2.6**, so the plugin's
+3.x requirement is met upstream — ⚠ but the work Staging stack is still **2.3.8 / GC 2.x**.
+The `netbox` fixture remains **pynetbox**, so the NetBox-vs-Nautobot divergence is unchanged
+and still unverified.
+
+**What was evaluated as an open replacement and rejected:** Golden Config compliance (prefix
+line-matching only — no conditionals, no numeric comparison, no negation, no cross-device
+relationships) · SuzieQ (stale, asserts not user-definable) · NUTS (dormant since 2024) ·
+netlint (dead since 2021, GPL-3.0) · pyATS/Genie (healthy, Apache-2.0, but Linux/macOS wheels
+only and ~25% closed-source Cython) · NAPALM `compliance_report()` (works, but YAML rules).
+★ **The shape that works: plain pytest asserts over `ciscoconfparse2` / `hier_config` for
+text, and pybatfish for semantics.**
+
