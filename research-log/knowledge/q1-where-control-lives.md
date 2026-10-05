@@ -96,3 +96,30 @@ An earlier note filed `makenotion/notion-mcp-server` (22 tools, up from 19) as Q
 **That repo is no longer actively maintained**; the hosted server (~29 tools, OAuth-only) is the
 live product. The earlier note is corrected, not deleted.
 
+
+## ★ Append 2026-10-05 — a fifth policy language, and policy at the model edge
+
+**OPA / Rego belongs in the table above and was missing.** Surfaced by
+`sources/reichert-platform-engineering.md`, where OPA is part of the platform stack.
+
+| Language | Owner | Character |
+|---|---|---|
+| **Rego (OPA)** | CNCF | general-purpose policy; datalog-derived; by far the most widely deployed of the five. Request-scoped. Sits between code and data in a way Cedar does not — which makes it a live candidate for **E2's third arm**. |
+
+⇒ The field is now **five languages, four of them request-scoped.** Dogwood remains the only
+one that can express "given what already happened." That shape is unchanged and now better
+evidenced.
+
+**Position 3 gained a concrete config.** `sources/agentgateway-model-object.md` — the
+`AgentgatewayModel` object collapses routing, auth and policy into one object at the LLM
+boundary. Two findings that change how position 3 should be read:
+
+- **CEL is not only authorization there.** It also performs request *transformation*
+  (`max_tokens` forced at the gateway). A control plane that can silently rewrite the caller's
+  request is a capability none of the other positions have, and the KB has no category for it.
+  ⇒ `research-log/build-queue.md` B2.
+- **The published authorization example matches on a request header**, which is
+  attacker-controllable unless the gateway derives it from authenticated identity. ⇒ B1.
+
+★ **Open, and new:** every position in the table assumes control is ALLOW or DENY.
+*Alteration* is a third outcome, and it is the one a caller cannot detect.

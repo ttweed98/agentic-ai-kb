@@ -99,3 +99,27 @@ refused — tested 2026-09-29). So:
    WSL → Windows. Files Claude writes go to Downloads and get `mv`'d in, never written to the
    mirror.
 
+
+---
+
+## Added 2026-10-05
+
+**New sources**
+- `sources/agentgateway-model-object.md` — Q1 position 3 with a config file; CEL doing
+  transformation as well as authz; regex prompt guards. ⚠ same author as the next entry.
+- `sources/agentic-ai-the-hard-way.md` — Levan's K8s agentic repo. **Placed in the Kubernetes
+  block (next year).** ⚠ same author as the entry above — one source between them.
+- `sources/reichert-platform-engineering.md` — Packt platform-engineering book. **Placed after
+  the Kubernetes study.** Surfaced the OPA gap and a memory-graph-over-MCP design for Case 03.
+
+**New method rule**
+- `method/read-and-run-is-the-default.md` — four arrivals. Check the step verbs before buying;
+  a book is input, not a rep.
+
+**New file**
+- `build-queue.md` — findings owed to `preflight`, which starts after MCPA. Holds B1-B4 and
+  **E5 (how leaky is a regex guard)**.
+
+**Knowledge updated**
+- `knowledge/q1-where-control-lives.md` — appended: Rego as a fifth policy language; position 3
+  made concrete; **alteration named as a third outcome the table does not cover.**
