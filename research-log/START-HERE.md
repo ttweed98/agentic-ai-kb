@@ -150,3 +150,158 @@ states.
    and nobody else writes it.
 6. **Demo artifacts from 2026-08-25** (`case-01-topology.md/.svg`, `agent-architecture.md/.svg`)
    were made but may still be uncommitted. Check.
+
+---
+
+# ADDENDUM 2026-10-05 — what the first version left out
+
+Appended, not rewritten. Where this section and the text above disagree, **this section wins**.
+
+**Two lines above are superseded:**
+
+- *"MCPA reading. Nothing else is in progress."* → MCPA is still the one active thread, but it
+  is **five workstreams, not one**. See "MCPA — the five workstreams" below.
+- *"Self-tests are open recall, not multiple choice."* → true for the **audio episodes** only.
+  The practice bank is multiple choice and is in use. The no-dumps rule is unchanged: no real
+  exam items, ever, and the sealed mocks are taken once, unseen.
+
+---
+
+## MCPA — the five workstreams
+
+Exam bought 2026-09-21 (Linux Foundation). **90 minutes.** 2026-07-28 spec. 17 competencies.
+Eligibility runs 12 months from purchase, one retake. He wants it **quickly** — the Koch AI
+push raised the urgency. Time available: **2 hours every weekday at the keyboard**; driving
+hours are audio only.
+
+### 1. Reading — the official documents
+- Source of truth: `modelcontextprotocol.io/llms.txt`. ⚠ Every URL must contain
+  `/2026-07-28/` — the site serves six versions with identical page titles. Append `.md` to
+  any page for clean Markdown.
+- Local clone of the spec repo, pulled daily.
+- Done so far: the McCaffrey AAIF post, the intro page, **Build a server** and **Build a
+  client** (both built and run — see workstream 5).
+- Supplementary, not primary: `rohitg00/ai-engineering-from-scratch` MCPA track at
+  `~/projects/MCP_Course/ai-engineering-from-scratch`. ⚠ He finds its lesson prose unreadable.
+  Use it as a **coverage checklist**, not as reading.
+- Stratis, *AI Agents with MCP* (O'Reilly) — on the plan, **placement not decided, his call.**
+  Chapter 3 checked: written to 2026-07-28.
+- ⚠ **Where he is in the reading is not recorded here.** Ask him; do not assume.
+
+### 2. Audio — the driving series
+- Eight episodes, 0 through 7. Episode 0 = what changed in 2026-07-28. Episodes 1–6 = the five
+  domains. Episode 7 = the cram, 63 recall questions.
+- Piper, voice `en_GB-alba-medium`. Lives in the `ai-information` repo under `audio/`.
+- He has been through the set several times. **Episodes 4 and 5 are on repeat.**
+- Episode rules: official wording and a plainer wording both kept, the official one labelled;
+  every example must be an actual instance of the concept; each episode closes with a recap by
+  domain and open-recall questions.
+
+### 3. Practice tests
+- Practice page: https://claude.ai/artifact/J2FBPWBouyCvfiKAAB8SJV — **362 questions**.
+  Modes: quiz, flashcard, sealed mock, review, progress. Filters: domain, source, level, pool.
+- Sources in the bank: purchased set 1 (`MCPA-v1.0.pdf`, 101 questions), the rohitg00 lesson
+  quizzes (204), purchased set 2 (VXExam, 60 — de-duplicated and independently keyed).
+- **Sealed:** the rohitg00 diagnostic and three 60-question mocks. Taken once, unseen, timed.
+  Answers only after submitting.
+- ★ **Standing rule:** anything written to an older protocol revision is **updated to
+  2026-07-28 if it can be, removed if it cannot.**
+- Levels: Foundation / Applied / Exam-depth. Easy first to build confidence. ⚠ The level score
+  is **kept out of the readiness score** — confidence is not depth.
+- Review tab: a wrong or flagged question links to the official page for that topic.
+- ★ **Booking gate — four conditions, not a percentage:** 90%+ on two consecutive fresh sets ·
+  no competency below 70% · every lab done unassisted · one full sitting inside 90 minutes.
+  ⚠ These questions cannot be calibrated to the real exam; a high score alone predicts nothing.
+
+### 4. The Soares MCP Bootcamp — the redo
+- O'Reilly live course, Lucas Soares, 2026-09-22/23. Attended. **Could not code along live.**
+- The redo: re-run every demo **on the NUC with the recording paused**. Personal keys are fine
+  there; the security lab is fine there. Capture the "why did he do that?" questions.
+- Repo: `~/projects/MCP_Course/mcp-course` (public: `github.com/EnkrateiaLucca/mcp-course`).
+  Pull before starting. No licence visible ⇒ study and run, do not copy files into his repos.
+- ⚠ The repo pins `mcp==1.30.0` — the v1 SDK, which speaks **2025-11-25**. Use it for the
+  shape of the code; the spec decides what is on the wire.
+
+| # | Module | What to do |
+|---|---|---|
+| 00 | Agents are loops | compare his loop with one written by hand |
+| 01 | First MCP server | run it; inspect with the Inspector CLI |
+| 02 | Agent SDK is an MCP host | note what the SDK does that a hand loop does not |
+| 03 | Skills vs MCP | read `mcp-builder-skill/reference/mcp_best_practices.md` |
+| 04 | Production shape | ★ `evals.py`, `tests/test_pre_tool_hook.py` — also M2's test rig |
+| 05 | Deploy remote | the stateless-leaning demo, closest to 2026-07-28 |
+| 06 | Defend and scale | ★ `security-lab/` — **NUC ONLY** |
+
+### 5. The MCP servers built for learning
+On record so far. **This list is his to extend** — add a row when a new one is agreed.
+
+| # | Server | State |
+|---|---|---|
+| 1 | Official tutorial — weather server (Python) | ✅ built, debugged, tested in the Inspector. `~/projects/MCP_Course/official-tutorials/` |
+| 2 | Official tutorial — client | ✅ built, ran against the Claude API |
+| 3 | His own minimal server + his own minimal client, verified with the Inspector CLI | owed — the Academy-stage deliverable |
+| 4 | Soares module servers (01, 04, 05, 06) | owed — workstream 4 |
+| 5 | Lab Block 0 — bring the Case 01 server to 2026-07-28 (repo still pins `mcp 2.0`) | owed |
+| 6 | Lab block — schemas and primitives: **resources and prompts**, not only tools | owed — ⚠ his known hole |
+| 7 | Lab block — execution, errors, **elicitation** (D3, 26%) | owed |
+| 8 | Lab block — security and authorization (D4, 24%) | owed |
+| 9 | Lab block — observability and ecosystem | owed |
+| — | After the exam: `preflight` M1 — the OAuth 2.1 chain in front of the server | queued behind MCPA |
+
+- Blocks 5–9 are built on **his existing server and cEOS fabric**, not a throwaway lab.
+- ★ **MCP goes into every lab** (his rule, 2026-09-21, revisable).
+- ⚠ Inspector defaults to the **legacy** protocol. Set it to "modern" for 2026-07-28.
+- Python method for all of these: Claude writes a section, he types it, they review it together.
+
+### The agreed order
+Claude Academy foundations (*AI Capabilities and Limitations* → *Building with the Claude API*
+→ *Introduction to MCP*) → Soares redo → deferred Academy courses (*MCP: Advanced Topics*,
+*Introduction to Agent Skills*, *Introduction to Subagents*) → MCPA lab blocks. Official
+documents run alongside the whole way. ⚠ *MCP: Advanced Topics* teaches sampling and roots,
+both deprecated in 2026-07-28 — read it as history.
+
+Roadmap document: https://claude.ai/code/artifact/8143b7b1-a07e-4fe4-865a-3aac566dd538
+(nine weeks, 35 two-hour sessions, original target sitting the week of 2026-11-23).
+
+### ⚠ One question still open — his call
+*"M0 runs after the MCPA reading"* does not say whether M0 comes **before or after the lab
+blocks and the exam itself.** Earlier notes say the build resumes after MCPA. Ask; do not pick.
+
+---
+
+## O'Reilly — courses booked (company subscription)
+
+Courses are **input, not reps.** None of these reorders MCPA.
+
+| Date | Course | Instructor | State |
+|---|---|---|---|
+| 2026-09-22/23 | MCP Bootcamp: Building AI Agents with MCP | Lucas Soares | attended · **redo owed** (workstream 4) |
+| 2026-09-23 → | AI Agents Bootcamp | Nicole Koenigstein | registered, expected to be recorded · ⚠ confirm whether watched |
+| 2026-09-29 | Harness Engineering for AI Agents | Richmond Alake | booked · ⚠ confirm whether attended |
+| date not recorded | Advanced Harness Engineering | Richmond Alake | booked · ⚠ confirm date |
+| **2026-10-06** | Claude Certified Architect – Foundations (CCAR-F) crash course | Lucas Soares | booked — **tomorrow** |
+| **2026-10-07 → 11-03** | Lunch & Learn: Claude Edition | Kesha Williams | signed up · weekdays 12pm ET, 45 min, 20 sessions |
+| 2026-10-12/13 | AI Engineering Bootcamp | Ammar Mohanna | booked |
+| self-paced | Python Functions and Classes | Deza and Gift | started |
+
+Notes that travel with the table:
+
+- **Koenigstein** — MCP alignment is thin; not exam prep. Value is tool governance and threat
+  modeling (Q4) and evaluation (Q2). Her book *AI Agents: The Definitive Guide* is on the
+  subscription: ch6 and ch12 for Q4, ch8 and ch9 for the eval thread.
+- **Alake** — companion repo `RichmondAlake/agent_harness_course`. Its premise (memory
+  allocation comes before every other harness decision) cuts against his memory-less
+  five-tool build. Arrive skeptical.
+- **CCAR-F crash course** — worth taking as a course. ⚠ It does **not** reopen the
+  certification order; the Claude certs stay behind MCPA. Its practice-question pool collides
+  with the no-item-pool rule ⇒ use any mock **once**, as measurement.
+- **Lunch & Learn** — needs a personal Anthropic API key with spending limits, Python 3, a
+  GitHub PAT, Claude Code by day 11, `jq` by day 12. ⚠ **Public repo only.** Suggested target:
+  `agentic-ai-book-labs`.
+- **Mohanna** — two days distilling Chip Huyen's *AI Engineering*, which is on the subscription.
+
+### Books on the subscription, queued
+- Ma and Wang, *Multi-Agent AI Engineering* (Packt, published 2026-09-24) — parallel reading
+  channel, Q3. Check the platform before buying anywhere.
+- Soares, *Skills for AI Agents* — saved, planned for early 2027.
+- Stratis, *AI Agents with MCP* — see workstream 1; placement open.

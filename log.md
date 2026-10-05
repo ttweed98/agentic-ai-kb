@@ -80,3 +80,4 @@ Example: `grep "^## \[" log.md | tail -5` shows the last five entries.
 ## [2026-10-05] ingest | 3 sources (agentgateway model object, Levan k8s repo, Reichert book), method/read-and-run-is-the-default, build-queue.md; Q1 appended with Rego + alteration-as-third-outcome
 ## [2026-10-05] reconstruct | PROJECT-preflight-paa-netops.md rebuilt into the repo (September original was never committed); M0-M5, E1-E5, B1-B3 folded in
 ## [2026-10-05] handover | START-HERE.md added as the state file; preflight project doc restored from the Sept original + 2026-10-05 research update; §6.1 decided (M0 after the MCPA reading); source notes updated for Batfish/Netpicker/Cedar+Dogwood
+## [2026-10-05] start-here addendum | START-HERE.md: MCPA split into five workstreams (reading, audio, practice tests, Soares redo, learning servers); O'Reilly course table added; two stale lines marked superseded
