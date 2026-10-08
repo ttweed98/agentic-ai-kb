@@ -309,3 +309,7 @@ Notes that travel with the table:
 ### Update 2026-10-05 (later)
 - **Reading position:** on `docs/2026-07-28/learn/server-concepts`, following along with each page.
 - **Alake harness courses (both):** saved, to be watched **after MCPA**. Not attended live.
+
+### Update 2026-10-08
+- **Anthropic Academy: Introduction to MCP — completed** (Skilljar). cli_project typed on the NUC, tools tested in the Inspector (legacy protocol, mcp 1.26.0).
+- Next: back to modelcontextprotocol.io at server-concepts, 2026-07-28 pages only.
