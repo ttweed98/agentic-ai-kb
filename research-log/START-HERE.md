@@ -313,3 +313,81 @@ Notes that travel with the table:
 ### Update 2026-10-08
 - **Anthropic Academy: Introduction to MCP — completed** (Skilljar). cli_project typed on the NUC, tools tested in the Inspector (legacy protocol, mcp 1.26.0).
 - Next: back to modelcontextprotocol.io at server-concepts, 2026-07-28 pages only.
+
+---
+
+## 2026-10-09 — Official MCP Authorization tutorial COMPLETED (Python) + a gap found in it
+
+**What was done.** The official tutorial "Understanding Authorization in MCP"
+(https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/authorization, Python tab)
+was typed by hand and run end to end. MCPA Domain 4 (Security, 24%).
+Folder (NUC, WSL): `~/projects/MCP_Course/official-tutorials/mcp-auth/`
+Files: `mcp_server/config.py`, `server.py`, `token_verifier.py`, `__init__.py` (empty), `pyproject.toml`.
+SDK installed by `uv sync`: `mcp 2.3.0`. Auth server: Keycloak 26.8.0 in Docker.
+Verified: VS Code -> 401 -> metadata -> Keycloak login + consent -> tools listed -> `add_numbers` called.
+
+### THE FINDING — the tutorial is missing a Keycloak step (as of 2026-10-09)
+- Symptom: VS Code shows `Error 401 ... invalid_token` after a successful login.
+  Server log: introspection returns `200 OK` but the body says `active: false`.
+- Cause, from Keycloak's own log (`INTROSPECT_TOKEN_ERROR`):
+  `reason="Client 'test-client' is not in the token audience"`.
+  Keycloak 26.8.0 only answers introspection for a client that is named in the token's audience.
+- Fix: on client scope `mcp:tools`, add a SECOND Audience mapper:
+  name `test-client-audience`, Included Client Audience = `test-client`, custom audience empty,
+  Add to access token ON, Add to token introspection ON.
+- The page does not mention this. The clue was in its own code: the comment in
+  `token_verifier.py` lists the audience as `["test-client", "http://localhost:3000", "account"]`.
+
+### Second trap — one mapper carries ONE audience
+An Audience mapper with BOTH "Included Client Audience" and "Included Custom Audience" filled in
+only emits the client. Observed: `aud=test-client`, server address missing, our verifier refused it.
+Working state on `mcp:tools`:
+
+| Mapper | Client audience | Custom audience |
+|---|---|---|
+| `audience-config` | (empty) | `http://localhost:3000` |
+| `test-client-audience` | `test-client` | (empty) |
+
+In the client picker, `test-client` is on page 2 — search for it. Check the mapper actually saved with it.
+
+### How it was found (the method, reusable)
+`verify_token` returns `None` silently on every failure (fails closed). Three `logger.warning`
+lines were added, one above each `return None` (HTTP status / not active / audience mismatch with
+both values). They are still in the file, on purpose: generic error to the client, detailed reason
+in the server log. Then Keycloak's reason:
+`docker logs --since 15m keycloak 2>&1 | grep -o 'reason="[^"]*"' | tail -3`
+
+### Operating notes for this lab
+- Keycloak container is named `keycloak`. Start: `docker start keycloak`. Stop: `docker stop keycloak`.
+  NEVER `docker run` it again — that makes an empty one. It exited (129) when its terminal was closed.
+- Start the server: `cd` to `mcp-auth`, then `set -a; source .env; set +a`, then `uv run mcp-simple-auth-rs`.
+  `os.getenv` does not read `.env`; without the first line the secret is silently empty.
+- `.env` needs only `OAUTH_CLIENT_SECRET`. Client ID defaults to `test-client` in `config.py`.
+- VS Code: use `MCP: List Servers` -> `mcp-auth-lab` -> Start Server / Sign Out / Show Output.
+  The `mcp.json` "file was not found" tab is a display problem; close it, do not click Create File.
+- Each failed attempt made VS Code register a NEW client (Dynamic Client Registration). Several
+  "Visual Studio Code" clients now exist in Keycloak. Harmless in the lab; delete extras if wanted.
+- The server prints `MCPDeprecationWarning: AuthSettings.validate_token_resource is not set` twice.
+  Harmless: our `token_verifier.py` checks the audience itself.
+- System Python on the NUC is 3.10: no `tomllib`. Let `uv sync` validate `pyproject.toml`.
+
+### Concepts this made concrete (MCPA D4)
+- Fail closed: anything that is not a clear yes returns "not valid" -> 401.
+- Audience is checked on BOTH sides: Keycloak (may this client inspect the token?) and our server
+  (was this token issued for me?).
+- Two consent points: Keycloak's "Grant Access" screen (scope), VS Code's "Allow" on each tool call.
+- Introspection runs on EVERY request: always current, one extra network call each time.
+- The tools contain no security code; `MCPServer` + `AuthSettings` does the guarding.
+
+### Python lessons from this file set
+- "syntax ok" is not "correct": `Host` vs `HOST` and `.iosformat()` both passed the syntax check
+  and would only fail when that line ran.
+- A white dot on a VS Code tab = not saved. Two files existed only in the editor. Auto Save is now on.
+- Python lines go in the file; shell commands go in the terminal.
+
+### Open / unverified
+- Server log showed `Created new transport with session ID` and VS Code logged an `initialize`
+  request. Earlier notes say 2026-07-28 Streamable HTTP is stateless and starts with
+  `server/discover`. NOT verified which is in play — check the 2026-07-28 transports page.
+- Lunch & Learn day-1 mystery CLOSED 2026-10-08: at `max_tokens=60` the only block returned was
+  type `thinking`. Thinking counts against `max_tokens`, so the budget ran out before any text.
