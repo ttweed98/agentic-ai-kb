@@ -458,3 +458,5 @@ Everything in the top section still stands unless listed here.
 | Anthropic MCP course | `~/MCPA/anthropic-mcp-course/cli_project` (NUC) |
 | Lunch & Learn | `~/MCPA/oreilly-claude-pr-review-helper` (work laptop) |
 | Latest handover | `research-log/HANDOVER-2026-10-08.md` |
+| Job postings tally | `research-log/job-postings-tally.md` |
+| Microsoft training mapped to the Koch agent design | `research-log/Microsoft training for Koch agents.md` |
