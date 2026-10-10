@@ -1,6 +1,6 @@
 # START HERE — paste this first in any new chat
 
-**Last updated 2026-10-05.** This is the state file: what is active, what is decided, what is
+**Last updated 2026-10-10 — read the "CURRENT STATE 2026-10-10" section near the end; it supersedes this top section where they differ.** Written 2026-10-05. This is the state file: what is active, what is decided, what is
 waiting. `INDEX.md` is the router for *what each file says*; this is the router for *what to do
 next*. Read this first, then ask for two or three files from `INDEX.md`.
 
@@ -391,3 +391,70 @@ in the server log. Then Keycloak's reason:
   `server/discover`. NOT verified which is in play — check the 2026-07-28 transports page.
 - Lunch & Learn day-1 mystery CLOSED 2026-10-08: at `max_tokens=60` the only block returned was
   type `thinking`. Thinking counts against `max_tokens`, so the budget ran out before any text.
+
+---
+
+## CURRENT STATE 2026-10-10 — supersedes the top section where they differ
+
+Read order for a new chat: the top section, then THIS section, then `HANDOVER-2026-10-08.md`.
+Everything in the top section still stands unless listed here.
+
+### What is active now
+- **MCPA is still first. Nothing resets it.** Exam bought 2026-09-21, 90 minutes, 2026-07-28 spec.
+- **Lunch & Learn: Claude Edition** runs alongside, to 2026-11-03. Not MCPA work.
+- **Work learning** (Koch's Claude + Teams program) ranks UNDER MCPA. See `HANDOVER-2026-10-08.md` §4.
+- So the top section's "Nothing else is in progress" is no longer true.
+
+### Where the MCPA reading is
+- Done: the four official Learn pages (10-06); Anthropic Academy "Introduction to MCP" (10-08);
+  the official Authorization tutorial, typed and run end to end (10-09, entry above).
+- **Now on:** Security Best Practices,
+  https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices
+  — in "Attacks and Mitigations". Confused Deputy is covered; ten attack topics remain.
+- Then: the 2026-07-28 transports page.
+- The order of the remaining workstreams (book, practice exams, class redo, labs) was stated
+  2026-10-09 and is explicitly NOT fixed. Ask him; do not assume.
+- Booking gate, unchanged: 90%+ on two consecutive fresh sets; no competency below 70%;
+  every lab done unassisted; one full sitting inside 90 minutes.
+
+### Corrections to the top section
+- **"Self-tests are open recall, not multiple choice" is superseded.** There is a multiple-choice
+  practice bank (purchased topic sets plus course quizzes). Its rules: no dumps and no real exam
+  items, ever; old-protocol questions are updated to 2026-07-28 or removed; sealed mocks are taken
+  once. Practice exams run live in chat, one question at a time, fresh each sitting.
+- **Lunch & Learn repo** is his own `ttweed98/claude-lunch-and-learn`, not `agentic-ai-book-labs`.
+  The class repo is `keshawillz/oreilly-claude-pr-review-helper`, one tag per session
+  (`day-01` ...). Done on the work laptop. Dedicated API key there; revoke by 2026-11-03.
+- **netmiko_mcp is no longer the only 2026-07-28 codebase he owns.**
+  `~/projects/MCP_Course/official-tutorials/mcp-auth/` is a working OAuth-protected MCP server on
+  `mcp 2.3.0`, and it is the OAuth chain `preflight` M1 would build on.
+
+### Claude certifications — the question reopened and was decided
+- Trigger fired 2026-10-07: his Koch email reached checkout at the Anthropic Partner Academy.
+- Decided 2026-10-08: **Developer – Foundations (CCDV-F) first after MCPA, then
+  Architect – Professional (CCAR-P).** Architect – Foundations is undecided.
+- Do not reopen the order. Do not propose booking anything before MCPA is passed.
+  Detail: `HANDOVER-2026-10-08.md` §5.
+
+### `preflight`
+- Unchanged: the build resumes after MCPA. Decisions §6.2 to §6.5 are still open and still his.
+- Still unsettled: whether M0 runs before or after the exam-prep lab work. Ask.
+
+### Verified since the top section was written
+- Security Best Practices (2026-07-28) states MCP is stateless with no protocol-level sessions;
+  server-assigned session IDs belong to 2025-11-25 and earlier. The transports-page check is
+  still owed.
+- Keycloak 26.8.0 needs the introspecting client in the token audience (entry above).
+
+### Seen, not placed
+- `anthropics/prompt-eng-interactive-tutorial` — Anthropic's prompt engineering course, 9 chapters
+  of notebooks, written for Claude 3 Haiku, has a Bedrock version. Not MCPA material. Suggested
+  slot: after MCPA, with CCDV-F prep. His call; not yet made.
+
+### Where things are — additions
+| | |
+|---|---|
+| Authorization lab | `~/projects/MCP_Course/official-tutorials/mcp-auth/` (NUC) |
+| Anthropic MCP course | `~/MCPA/anthropic-mcp-course/cli_project` (NUC) |
+| Lunch & Learn | `~/MCPA/oreilly-claude-pr-review-helper` (work laptop) |
+| Latest handover | `research-log/HANDOVER-2026-10-08.md` |
