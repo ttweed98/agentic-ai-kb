@@ -460,3 +460,63 @@ Everything in the top section still stands unless listed here.
 | Latest handover | `research-log/HANDOVER-2026-10-08.md` |
 | Job postings tally | `research-log/job-postings-tally.md` |
 | Microsoft training mapped to the Koch agent design | `research-log/Microsoft training for Koch agents.md` |
+
+---
+
+## ★ ADDENDUM 2026-10-10 — read this before anything above
+
+The sections above are from 2026-10-05. Where they disagree with this addendum, **this addendum
+wins**. The detail lives in `research-log/HANDOVER-2026-10-08.md` (updated 2026-10-10) — read it next.
+
+### The active thread — still MCPA, now a six-step plan (his, 2026-10-09)
+1. Audio every day in the car.
+2. Finish the MCP website (2026-07-28 pages + tutorials).
+   **Resume point:** the Authorization tutorial, `~/projects/MCP_Course/official-tutorials/mcp-auth`.
+   Keycloak is configured; `__init__.py` exists; **next: he types `mcp_server/config.py`**, then
+   `token_verifier.py` → `server.py` → `pyproject.toml` → run → test in VS Code (handover §1a, §7).
+3. Read *AI Agents with MCP* (Stratis).
+4. Start practice exams (sealed mocks, taken once).
+5. Re-watch the Soares MCP class and do its labs.
+6. MCP labs built from the exam topics.
+Booking gate unchanged.
+
+### What happens after MCPA — REPLACES "What happens after the reading" above
+M0 no longer comes straight after MCPA. The order is now (handover §6½):
+**MCPA → Sayfan + Arsanjani (+ Alake) → post the Arsanjani review → `preflight` phase → Lanham 2E →
+Claude exams (CCDV-F, then CCAR-P).**
+M0 (the SAFE-MCP coverage matrix) is still the first milestone **of the `preflight` phase** — its
+definition above is unchanged. The `preflight` phase also carries: Ma & Wang (design reference),
+the Koenigstein AI Agents Bootcamp → her book's notebooks (hands-on), the Williams governance track,
+Johnson / Software Factory / Arbon alongside, and Case 03 + *Hands-On RAG*.
+New references for M2 (gate / allowlist / approval): Koenigstein `ch06_A2A_MCP_Governed` (a single
+`governed_call` enforcement point + approval workflow + audit report) and the bootcamp's
+`demo/config/governance/defaults.yaml` (budget caps + required audit artifacts).
+
+### Decisions made since 2026-10-05
+| Decision | When |
+|---|---|
+| Claude exam order: **CCDV-F first, then CCAR-P**; CCAR-F decided later; Associate skipped | 10-08 |
+| **Case 03 folds under `preflight` — as its own separate sub-project** (closes the open row above) | 10-09 |
+| ★ **CHANGE NOTHING FOR NOW** — stay on MCPA; everything collected this week waits for a review once Koch shares more information | 10-09 |
+| Post-MCPA reading and lab plan (all owned books/courses placed) — handover §6½ | 10-10 |
+| Placement rule: *a book with a lab repo is a rep; a book without one is a reference* | 10-10 |
+
+⚠ The reopen trigger in "The one active thread" above is **superseded**: the plan reopens when
+**Koch shares more information** (or MCPA is done). Do not propose reordering before then.
+
+Still open (unchanged): §6.2 is M1 in · §6.3 repo name · §6.4 E2 arms · §6.5 Cedar vs asserts.
+
+### Running in parallel — corrections
+- **Lunch & Learn:** he types each day into **his own `claude-lunch-and-learn` repo** (not
+  `agentic-ai-book-labs`). Clone `oreilly-claude-review-target` before day 8. Instructor tags
+  `day-NN` arrive daily; `main` = latest session. Personal API key on the work laptop: low limit,
+  **revoke by Nov 3**.
+- **Koch's program (internal — never public):** Claude as the model, **Teams** as the prompt window;
+  SD-WAN first, then all automations; a builder + QA bot with a rework loop and a human approver,
+  AWS DEV then PROD. **His team owns "the boundary and the check"**: no ID, no owner, no approval → stop.
+- **Microsoft Ignite 2026** (Nov 17–20) — virtual pass, learning only (handover §6 item 6).
+
+### New files in `research-log/` since 2026-10-05
+- `HANDOVER-2026-10-08.md` — the current state; newer than this file.
+- `job-postings-tally.md` — postings used to check study direction and find gaps.
+- `Microsoft training for Koch agents.md` — free Microsoft training research.
