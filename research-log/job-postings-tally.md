@@ -18,11 +18,11 @@ direction is right, to see where further training is needed, and to find gaps in
 |---|---|---|---|
 | Python — strong software engineering (composing, not transcribing) | 1 | 🟡 | Lunch & Learn, MCP labs, Python Functions & Classes (O'Reilly) |
 | LLM apps / AI APIs | 1 | 🟡 | Lunch & Learn, Anthropic Academy, CCDV-F |
-| Agent frameworks (LangChain / LangGraph / LlamaIndex) | 1 | 📅 | LangGraph build + LangChain cert, after MCPA |
+| Agent frameworks (LangChain / LangGraph / LlamaIndex) | 1 | 📅 | Koenigstein bootcamp + book notebooks (LangGraph), `preflight` phase; Marco LangChain later |
 | API services (FastAPI or similar) | 1 | ❌ | not on the plan by name — natural next step after the MCP auth tutorial |
 | Cloud (AWS / GCP / Azure) | 1 | ✅ | AWS in daily work; Bedrock gap → AWS GenAI Developer cert |
 | Agents shipped to production | 1 | 🟡 | Koch agentic program (Claude + Teams) |
-| RAG | 1 | ❌ | no slot yet — decide after MCPA |
+| RAG | 1 | 📅 | *Hands-On RAG for Production* (Mendelevitch & Bao) with the Nautobot graph, `preflight` phase — slotted 2026-10-10 |
 | Tool calling | 1 | 🟡 | MCPA, Case 01 MCP tools |
 | Model / agent evaluation | 1 | ✅ | Case 01 scored runs, DEV AI kit evaluation, eval-harness thread |
 | Prompt engineering / orchestration | 1 | 🟡 | Lunch & Learn, CCDV-F |
